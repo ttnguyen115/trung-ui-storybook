@@ -16,35 +16,20 @@ function LoginForm() {
         >
           Please enter your credentials to login
         </Text>
-        <Text
-          as="label"
-          htmlFor="username"
-          size="sm"
-          weight="medium"
-          className="mb-1.5"
-        >
-          Username
-        </Text>
         <Input
           type="text"
           id="username"
           placeholder="Username"
+          label="Username"
           className="mb-4"
         />
-        <Text
-          as="label"
-          htmlFor="password"
-          size="sm"
-          weight="medium"
-          className="mb-1.5"
-        >
-          Password
-        </Text>
         <Input
           type="password"
           id="password"
           placeholder="Password"
+          label="Password"
           className="mb-4"
+          errors={{ password: ["Password is missing"] }}
         />
         <Button type="submit" variant="solid" className="mb-10">
           Login
