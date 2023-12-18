@@ -1,4 +1,4 @@
-import { Box, Stack, Button, Input, Text } from "@/components";
+import { Box, Stack, Button, Input, Text, Checkbox } from "@/components";
 
 function LoginForm() {
   return (
@@ -29,8 +29,8 @@ function LoginForm() {
           placeholder="Password"
           label="Password"
           className="mb-4"
-          errors={{ password: ["Password is missing"] }}
         />
+        <Checkbox>label</Checkbox>
         <Button type="submit" variant="solid" className="mb-10">
           Login
         </Button>

@@ -1,4 +1,4 @@
-import { ComponentProps, forwardRef } from "react";
+import { ComponentProps, forwardRef, ForwardRefRenderFunction } from "react";
 import { cva, VariantProps } from "class-variance-authority";
 import { cn } from "@/utils";
 
@@ -55,14 +55,21 @@ const buttonStyles = cva(
 
 type ButtonProps = ComponentProps<"button"> & VariantProps<typeof buttonStyles>;
 
+const InternalCheckbox: ForwardRefRenderFunction<
+  HTMLButtonElement,
+  ButtonProps
+> = ({ variant, size, colorScheme, className, ...props }, ref) => {
+  return (
+    <button
+      ref={ref}
+      className={cn(buttonStyles({ variant, size, colorScheme, className }))}
+      {...props}
+    />
+  );
+};
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant, size, colorScheme, className, ...props }, ref) => {
-    return (
-      <button
-        ref={ref}
-        className={cn(buttonStyles({ variant, size, colorScheme, className }))}
-        {...props}
-      />
-    );
-  }
+  InternalCheckbox
 );
+
+Button.displayName = "Button";
