@@ -1,5 +1,13 @@
-import { ComponentProps, forwardRef, ForwardRefRenderFunction } from "react";
+import {
+  ComponentProps,
+  forwardRef,
+  ForwardRefRenderFunction,
+  MouseEvent,
+  MouseEventHandler,
+  ReactNode,
+} from "react";
 import { cva, VariantProps } from "class-variance-authority";
+import { LoadingOutlined } from "@ant-design/icons";
 import { cn } from "@/utils";
 
 const buttonStyles = cva(
@@ -53,18 +61,55 @@ const buttonStyles = cva(
   }
 );
 
-type ButtonProps = ComponentProps<"button"> & VariantProps<typeof buttonStyles>;
+interface ButtonProps
+  extends ComponentProps<"button">,
+    VariantProps<typeof buttonStyles> {
+  icon?: ReactNode;
+  loading?: boolean;
+  disabled?: boolean;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+}
 
 const InternalCheckbox: ForwardRefRenderFunction<
   HTMLButtonElement,
   ButtonProps
-> = ({ variant, size, colorScheme, className, ...props }, ref) => {
+> = (
+  {
+    variant,
+    size,
+    colorScheme,
+    className,
+    children,
+    icon,
+    loading = false,
+    disabled,
+    onClick,
+    ...props
+  },
+  ref
+) => {
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    if (loading) {
+      e.preventDefault();
+      return;
+    }
+    onClick?.(e);
+  };
+
   return (
     <button
       ref={ref}
-      className={cn(buttonStyles({ variant, size, colorScheme, className }))}
+      onClick={handleClick}
+      disabled={disabled ?? loading}
+      className={cn(
+        "flex items-center justify-center",
+        buttonStyles({ variant, size, colorScheme, className })
+      )}
       {...props}
-    />
+    >
+      {loading && <LoadingOutlined spin className="mr-2" />}
+      {children}
+    </button>
   );
 };
 
