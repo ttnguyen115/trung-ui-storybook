@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { FieldValues, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 
 import { Box, Stack, Button, Input, Text, Checkbox } from "@/components";
@@ -12,28 +10,13 @@ const schema = z.object({
 });
 
 function LoginForm() {
-  const [loading, setLoading] = useState(false);
-
-  const { register, handleSubmit, errors } = useCustomForm(schema);
-
-  const delay = (ms: number) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
-  const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
-    try {
-      setLoading(true);
-      await delay(3000);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { register, handleSubmit, errors, isFormSubmitting } = useCustomForm({
+    schema,
+    defaultValues: { username: "", password: "", rememberMe: false },
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit}>
       <Box className="px-8 py-12 border boder-gray-300 rounded-xl">
         <Stack>
           <Text
@@ -92,7 +75,7 @@ function LoginForm() {
             type="submit"
             variant="solid"
             className="mb-10"
-            loading={loading}
+            loading={isFormSubmitting}
           >
             Login
           </Button>
